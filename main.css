@@ -2,12 +2,24 @@
     font-family: monospace;
 }
 
+body {
+    background-color: #e6ecfa;
+    font-size: 120%;
+    position: relative;
+    text-align: center;
+}
+
 #main-content {
-    display: flex;
+    background-color: #ffffff;
+    display: inline-flex;
     flex-wrap: wrap;
-    height: calc(100% - 2em);
-    padding: 1em;
-    width: calc(100% - 2em);
+    height: calc(100% - 8em);
+    margin: 2em;
+    max-width: 768px;
+    padding: 2em;
+    position: relative;
+    text-align: left;
+    width: calc(100% - 8em);
 }
 
 .code {
@@ -26,15 +38,18 @@
 }
 
 .code-wrapper {
-    flex: 50%;
+    flex: 60%;
 }
 
 .overview {
-    flex: 50%;
+    flex: 35%;
+    min-width: 248px;
+    padding: 0 0.5em;
 }
 
-.overview .title {
+.title {
     font-size: 2em;
+    width: 100%;
 }
 
 #footer {
@@ -44,7 +59,9 @@
 }
 
 @media screen and (max-width: 768px) {
-    body {
-        font-size: 120%;
+    #main-content {
+        margin: 0;
+        padding: 1em;
+        width: calc(100% - 2em);
     }
 }
