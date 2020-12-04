@@ -5,21 +5,22 @@
 body {
     background-color: #e6ecfa;
     font-size: 120%;
-    position: relative;
     text-align: center;
 }
 
-#main-content {
+#main-wrapper {
     background-color: #ffffff;
-    display: inline-flex;
-    flex-wrap: wrap;
     height: calc(100% - 8em);
-    margin: 2em;
+    margin: 2em auto;
     max-width: 768px;
     padding: 2em;
-    position: relative;
     text-align: left;
     width: calc(100% - 8em);
+}
+
+#main-content {
+    display: inline-flex;
+    flex-wrap: wrap;
 }
 
 .title {
@@ -34,7 +35,7 @@ body {
 }
 
 @media screen and (max-width: 768px) {
-    #main-content {
+    #main-wrapper {
         margin: 0;
         padding: 1em;
         width: calc(100% - 2em);
