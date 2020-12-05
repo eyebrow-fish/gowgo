@@ -28,6 +28,14 @@ body {
     width: 100%;
 }
 
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 #footer {
     bottom: 0;
     text-align: center;
@@ -36,7 +44,7 @@ body {
 
 @media screen and (max-width: 768px) {
     #main-wrapper {
-        margin: 0;
+        margin: 0 0 2em 0;
         padding: 1em;
         width: calc(100% - 2em);
     }
