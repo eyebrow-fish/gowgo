@@ -13,6 +13,22 @@
     <div id="main-content">
         <p class="title">go with go - <span class="lesson">Variables</span></p>
         <div class="overview">
+            <p>
+                Like most modern languages Golang has a <span class="keyword">var</span>
+                keyword. When using this keyword, a type must be provided after
+                the name of the variable.
+            </p>
+            <p>
+                However, the convention is to use the
+                <span class="keyword">walrus operator</span>
+                <span class="comment">(:=)</span>, unless the
+                variable is outside of a function or not initialized yet.
+            </p>
+            <p>
+                Finally, there is the <span class="keyword">const</span>
+                keyword. Normally, we only use this for variables outside of functions
+                and when we know the value should stay the same.
+            </p>
         </div>
         <div class="code-wrapper">
             <div class="code">
@@ -28,7 +44,23 @@
 <pre>
 <span class="keyword">package</span> main
 
+<span class="keyword">const</span> allowDog <span class="keyword">bool</span> = <span class="bool">true</span>
+
+<span class="comment">// const and var definitions can also be multi-line</span>
+<span class="keyword">const</span> (
+    good <span class="keyword">string</span> = <span class="string">"dog allowed"</span>
+    bad <span class="keyword">string</span> = <span class="string">"not allowed"</span>
+)
+
 <span class="keyword">func</span> main() {
+    dog := <span class="bool">true</span> <span class="comment">// type is inferred</span>
+    <span class="keyword">var</span> output <span class="keyword">string</span>
+    <span class="keyword">if</span> dog && allowDog {
+        output = good
+    } <span class="keyword">else</span> {
+        output = bad
+    }
+    <span class="comment">// do something with the output</span>
 }
 </pre>
                 </div>
