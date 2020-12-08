@@ -39,5 +39,27 @@
 }
 
 #main-wrapper #nav {
+    height: 20px;
     padding: 1em;
+    width: calc(100% - 2em);
+}
+
+#main-wrapper #nav a {
+    position: absolute;
+    width: 200px;
+}
+
+#main-wrapper #nav #prev {
+    left: 1em;
+    text-align: left;
+}
+
+#main-wrapper #nav #mid {
+    right: calc(50% - 100px);
+    text-align: center;
+}
+
+#main-wrapper #nav #next {
+    right: 1em;
+    text-align: right;
 }
