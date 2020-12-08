@@ -28,7 +28,36 @@
 <pre>
 <span class="keyword">package</span> main
 
+<span class="keyword">import</span> (
+    <span class="string">"fmt"</span>
+)
+
 <span class="keyword">func</span> main() {
+    switch name := "Alex"; name {
+    case "Alex":
+        fmt.Println("is author")
+    case "Larissa", "Markus", "Annette":
+        fmt.Println("is awesome")
+    default:
+        fmt.Println("who are you?")
+    }
+    // sometimes we want to evaluate conditions
+    x := 5
+    switch {
+    case x < 5:
+        fmt.Printf("%d is less than 5\n", x)
+    default:
+        fmt.Printf("%d is too big\n", x)
+    }
+    // fallthrough falls through to the next
+    // case even if it's not met
+    switch good := "dog"; "dog" {
+    case "dog":
+        fmt.Println("good boy!")
+        fallthrough
+    default:
+        fmt.Printf("got %s\n", good)
+    }
 }
 </pre>
                 </div>
