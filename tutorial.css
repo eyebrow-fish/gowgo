@@ -46,7 +46,7 @@
 
 #main-wrapper #nav a {
     position: absolute;
-    width: 200px;
+    width: 10em;
 }
 
 #main-wrapper #nav #prev {
@@ -55,11 +55,31 @@
 }
 
 #main-wrapper #nav #mid {
-    right: calc(50% - 100px);
+    right: calc(50% - 5em);
     text-align: center;
 }
 
 #main-wrapper #nav #next {
     right: 1em;
     text-align: right;
+}
+
+@media screen and (min-width: 650px) {
+    #main-wrapper #nav #prev:before {
+        content: '<< ';
+    }
+
+    #main-wrapper #nav #next:after {
+        content: ' >>';
+    }
+}
+
+@media screen and (max-width: 450px) {
+    #main-wrapper #nav a {
+        width: 6em;
+    }
+
+    #main-wrapper #nav #mid {
+        right: calc(50% - 3em);
+    }
 }

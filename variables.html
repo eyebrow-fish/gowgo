@@ -67,21 +67,20 @@
 
 <span class="keyword">const</span> allowDog <span class="keyword">bool</span> = <span class="bool">true</span>
 
-<span class="comment">// const and var support multi-line</span>
+<span class="comment">// supports multi-line</span>
 <span class="keyword">const</span> (
     good <span class="keyword">string</span> = <span class="string">"dog allowed"</span>
     bad <span class="keyword">string</span> = <span class="string">"not allowed"</span>
 )
 
 <span class="keyword">func</span> main() {
-    dog := <span class="bool">true</span> <span class="comment">// type is inferred</span>
+    dog := <span class="bool">true</span> <span class="comment">// inferred</span>
     <span class="keyword">var</span> output <span class="keyword">string</span>
     <span class="keyword">if</span> dog && allowDog {
         output = good
     } <span class="keyword">else</span> {
         output = bad
     }
-    <span class="comment">// do something with the output</span>
     fmt.Println(output)
 }
 </pre>
@@ -92,7 +91,7 @@
 
     </div>
     <div id="nav">
-        <a id="prev" href="hello-world.html"><< Hello, World!</a>
+        <a id="prev" href="hello-world.html">Hello, World!</a>
         <a id="mid" href="index.html">Back to Index</a>
     </div>
 </div>
