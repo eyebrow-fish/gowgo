@@ -5,12 +5,13 @@
     border-style: solid;
     border-width: 1px;
     display: flex;
+    max-width: calc(100% - 1em);
     padding: 0 0.5em 0 0.5em;
 }
 
 .code .lines {
+    color: #8b8b8b;
     padding-right: 15px;
-    color: #8b8b8b
 }
 
 .code-wrapper {
