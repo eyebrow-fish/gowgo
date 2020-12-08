@@ -13,6 +13,24 @@
     <div id="main-content">
         <p class="title">go with go - <span class="lesson">If Statements</span></p>
         <div class="overview">
+            <p>If statements are a crucial part to any program.</p>
+            <p>
+                If statements start with the <span class="keyword">if</span> keyword.
+                Directly after is the condition to be evaluated.
+                Then the block to executed if the condition is <span class="prim">true</span>.
+            </p>
+            <p>
+                Sometimes our conditions may be <span class="prim">false</span> and we want to
+                do something else in this case. We do this with
+                <span class="keyword">else</span> or <span class="keyword">else if</span>.
+                The difference being that <span class="keyword">else</span> can only occur
+                once and has no condition.
+            </p>
+            <p>
+                Scoping variables are also an important feature.
+                These are variables which are only accessible in the if conditions
+                and blocks.
+            </p>
         </div>
         <div class="code-wrapper">
             <div class="code">
@@ -71,10 +89,10 @@
     }
     <span class="comment">// scoped variables</span>
     <span class="keyword">if</span> good := <span class="string">"dog"</span>; good == <span class="string">"dog"</span> {
-        // good can be used here
+        <span class="comment">// good can be used here</span>
         fmt.Println(<span class="string">"good %s"</span>, good)
     } <span class="keyword">else</span> {
-        // good can still be used
+        <span class="comment">// good can still be used</span>
         fmt.Println(<span class="string">"not good %s"</span>, good)
     }
     <span class="comment">// good can no longer be used</span>
