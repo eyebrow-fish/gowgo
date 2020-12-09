@@ -24,6 +24,11 @@
     padding: 0 1.5em;
 }
 
+.overview ul {
+    list-style-type: disc;
+    padding: 0 0 0 1em;
+}
+
 .command {
     background-color: #f3f3f3;
     border-color: #676767;

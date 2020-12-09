@@ -16,6 +16,31 @@
             <p>
                 Switch statements are a way of making your conditions more concise.
             </p>
+            <p>
+                Switch statements begin with the <span class="keyword">switch</span> keyword.
+                Within the switch block, specific values are met which are denoted by the
+                <span class="keyword">case</span> keyword. When a case is matched, it
+                executes the lines from there until the next case.
+            </p>
+            <p>
+                In addition to the <span class="keyword">case</span> keyword, there is the
+                <span class="keyword">default</span> keyword. This is for when none of
+                the cases match.
+            </p>
+            <p>
+                The last keyword is <span class="keyword">fallthrough</span>.
+                If we reach this keyword, the next case will match regardless of if it
+                originally would of. The only except is if the next case is a
+                <span class="keyword">default</span>. This is amazing for removing
+                duplicate code.
+            </p>
+            <p>
+                There are two other small little notes about switches.
+            </p>
+            <ul>
+                <li>If a value is not passed in, cases can be conditions.</li>
+                <li>Like <a href="if.html">if statements</a> switches can have scoped variables.</li>
+            </ul>
         </div>
         <div class="code-wrapper">
             <div class="code">
