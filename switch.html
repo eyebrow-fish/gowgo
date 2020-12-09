@@ -13,6 +13,9 @@
     <div id="main-content">
         <p class="title">go with go - <span class="lesson">Switch Statements</span></p>
         <div class="overview">
+            <p>
+                Switch statements are a way of making your conditions more concise.
+            </p>
         </div>
         <div class="code-wrapper">
             <div class="code">
@@ -22,6 +25,36 @@
 2
 3
 4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
 </pre>
                 </div>
                 <div>
@@ -33,30 +66,31 @@
 )
 
 <span class="keyword">func</span> main() {
-    switch name := "Alex"; name {
-    case "Alex":
-        fmt.Println("is author")
-    case "Larissa", "Markus", "Annette":
-        fmt.Println("is awesome")
-    default:
-        fmt.Println("who are you?")
+    <span class="keyword">switch</span> name := <span class="string">"Alex"</span>; name {
+    <span class="keyword">case</span> <span class="string">"Alex"</span>:
+        fmt.Println(<span class="string">"is author"</span>)
+    <span class="keyword">case</span> <span class="string">"Larissa"</span>, <span class="string">"Markus"</span>, <span class="string">"Annette"</span>:
+        fmt.Println(<span class="string">"is awesome"</span>)
+    <span class="keyword">default</span>:
+        fmt.Println(<span class="string">"who are you?"</span>)
     }
-    // sometimes we want to evaluate conditions
-    x := 5
-    switch {
-    case x < 5:
-        fmt.Printf("%d is less than 5\n", x)
-    default:
-        fmt.Printf("%d is too big\n", x)
+    <span class="comment">// sometimes we want to evaluate conditions</span>
+    x := <span class="prim">5</span>
+    <span class="keyword">switch</span> {
+    <span class="keyword">case</span> x < <span class="prim">5</span>:
+        fmt.Printf(<span class="string">"%d is less than 5\n"</span>, x)
+    <span class="keyword">default</span>:
+        fmt.Printf(<span class="string">"%d is too big\n"</span>, x)
     }
-    // fallthrough falls through to the next
-    // case even if it's not met
-    switch good := "dog"; "dog" {
-    case "dog":
-        fmt.Println("good boy!")
-        fallthrough
-    default:
-        fmt.Printf("got %s\n", good)
+    <span class="comment">// fallthrough falls through to the next</span>
+    <span class="comment">// case even if it's not met</span>
+    <span class="keyword">switch</span> good := <span class="string">"dog"</span>; good {
+    <span class="keyword">case</span> <span class="string">"dog"</span>:
+        fmt.Println(<span class="string">"good boy!"</span>)
+    <span class="keyword">fallthrough</span>
+    <span class="keyword">default</span>:
+        <span class="comment">// we will always reach this point</span>
+        fmt.Printf(<span class="string">"got %s\n"</span>, good)
     }
 }
 </pre>
