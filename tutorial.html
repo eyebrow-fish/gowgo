@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width"/>
+    <title>go with go - {{var = lesson}}</title>
+    <link rel="stylesheet" type="text/css" href="{{path = main.css}}"/>
+    <link rel="stylesheet" type="text/css" href="{{path = code.css}}"/>
+    <link rel="stylesheet" type="text/css" href="{{path = tutorial.css}}"/>
+</head>
+<body>
+<div id="main-wrapper">
+    <div id="main-content">
+        <p class="title">go with go - <span class="lesson">{{var = lesson}}</span></p>
+        <div class="overview">
+            {{var = overview}}
+        </div>
+        <div class="code-wrapper">
+            <div class="code">
+                <div class="lines">
+<pre class="unselectable">
+{{var = lineCount}}
+</pre>
+                </div>
+                <div>
+                    {{var = code}}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div id="nav">
+        <a id="prev" href="{{var = prev}}">{{href = prev}}</a>
+        <a id="mid" href="{{var = home}}">{{href = home}}</a>
+        <a id="next" href="{{var = next}}">{{href = next}}</a>
+    </div>
+</div>
+<div id="footer"><'`><</div>
+</body>
+</html>
