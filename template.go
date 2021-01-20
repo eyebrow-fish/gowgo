@@ -8,7 +8,13 @@ import (
 	"strings"
 )
 
-func RenderTemplate(input, output string, attr map[string]string) error {
+type Html struct {
+	Id        string
+	Href      string
+	InnerHtml string
+}
+
+func RenderTemplate(input, output string, attr map[string]string, htmlTemps map[string]*Html) error {
 	inputData, err := ioutil.ReadFile(input)
 	if err != nil {
 		return err
@@ -27,6 +33,11 @@ func RenderTemplate(input, output string, attr map[string]string) error {
 	if err != nil {
 		return err
 	}
+	htmlMatches, err := findMatches("html", string(inputData))
+	if err != nil {
+		return err
+	}
+	template = injectHtml(template, htmlTemps, htmlMatches)
 	paths := strings.SplitAfter(output, string(os.PathSeparator))
 	err = os.Mkdir(strings.Join(paths[:len(paths)-1], string(os.PathSeparator)), 0755)
 	if err != nil {
@@ -46,6 +57,17 @@ func RenderTemplate(input, output string, attr map[string]string) error {
 	return err
 }
 
+func injectVars(template string, attr map[string]string, varMatches []string) string {
+	for _, match := range varMatches {
+		key := strings.TrimFunc(
+			strings.SplitAfter(match, "=")[1],
+			func(r rune) bool { return r == ' ' || r == '}' },
+		)
+		template = strings.ReplaceAll(template, match, attr[key])
+	}
+	return template
+}
+
 func injectPaths(template, output string, pathMatches []string) (string, error) {
 	for _, match := range pathMatches {
 		fileName := strings.TrimFunc(
@@ -62,19 +84,25 @@ func injectPaths(template, output string, pathMatches []string) (string, error) 
 	return template, nil
 }
 
-func injectVars(template string, attr map[string]string, varMatches []string) string {
-	for _, match := range varMatches {
+func injectHtml(template string, htmlTemps map[string]*Html, htmlMatches []string) string {
+	for _, match := range htmlMatches {
 		key := strings.TrimFunc(
 			strings.SplitAfter(match, "=")[1],
 			func(r rune) bool { return r == ' ' || r == '}' },
 		)
-		template = strings.ReplaceAll(template, match, attr[key])
+		htmlTemp := htmlTemps[key]
+		var htmlText string
+		htmlText = ""
+		if htmlTemp != nil {
+			htmlText = fmt.Sprintf(`<a id="%s" href="%s">%s</a>`, htmlTemp.Id, htmlTemp.Href, htmlTemp.InnerHtml)
+		}
+		template = strings.ReplaceAll(template, match, htmlText)
 	}
 	return template
 }
 
 func findMatches(typeName, inputData string) ([]string, error) {
-	varExp, err := regexp.Compile(fmt.Sprintf("{{\\s*%s\\s*=\\s*[A-z0-9\\.]+\\s*}}", typeName))
+	varExp, err := regexp.Compile(fmt.Sprintf("{{\\s*%s\\s*=\\s*[A-z0-9\\.\\(\\)\\,\\s]+\\s*}}", typeName))
 	if err != nil {
 		return nil, err
 	}
