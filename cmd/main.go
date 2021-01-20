@@ -11,6 +11,15 @@ func main() {
 		"bin/hello-world.html",
 		map[string]string{
 			"lesson": "Hello, World!",
+			"code": `package main
+
+import (
+    "fmt"
+)
+
+func main() {
+    fmt.Println("Hello, World!")
+}`,
 		},
 		map[string]*gowgo.Html{
 			"next": {"next", "if.html", "If Statements"},
