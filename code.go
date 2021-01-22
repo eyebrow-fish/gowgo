@@ -15,27 +15,31 @@ func ReadCode(filename string) (string, error) {
 		return "", err
 	}
 	c := code(codeBytes)
-	strs, err := c.highlightRegexAs("\".*\"", "string")
-	if err != nil {
-		return "", err
-	}
-	prims, err := strs.highlightRegexAs("([0-9]+)|true|false", "prim")
-	if err != nil {
-		return "", err
-	}
-	packages := prims.highlightKeyword("package")
+	packages := c.highlightKeyword("package")
 	imps := packages.highlightKeyword("import")
 	funcs := imps.highlightKeyword("func")
 	vars := funcs.highlightKeyword("var")
 	consts := vars.highlightKeyword("const")
 	ifs := consts.highlightKeyword("if")
 	elses := ifs.highlightKeyword("else")
-	trimmed := elses.removeLastLine()
+	prims, err := elses.highlightRegexAs("([0-9]+)|true|false", "prim")
+	if err != nil {
+		return "", err
+	}
+	strs, err := prims.highlightRegexAs("\".*\"", "string")
+	if err != nil {
+		return "", err
+	}
+	comments, err := strs.highlightRegexAs("\\/\\/.*\n", "comment")
+	if err != nil {
+		return "", err
+	}
+	trimmed := comments.removeLastLine()
 	return string(trimmed), err
 }
 
 func (c code) highlightKeyword(word string) code {
-	return code(strings.ReplaceAll(string(c), word, fmt.Sprintf(`<span class="keyword">%s</span>`, word)))
+	return code(strings.ReplaceAll(string(c), word, fmt.Sprintf("<span class='keyword'>%s</span>", word)))
 }
 
 func (c code) highlightRegexAs(regex, class string) (code, error) {
@@ -43,9 +47,9 @@ func (c code) highlightRegexAs(regex, class string) (code, error) {
 	if err != nil {
 		return "", err
 	}
-	var full string
+	full := string(c)
 	for _, s := range pattern.FindAllString(full, -1) {
-		full = strings.ReplaceAll(full, s, fmt.Sprintf(`<span class="%s">%s</span>`, class, s))
+		full = strings.ReplaceAll(full, s, fmt.Sprintf("<span class='%s'>%s</span>", class, s))
 	}
 	return code(full), nil
 }
