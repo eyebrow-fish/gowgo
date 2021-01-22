@@ -22,8 +22,7 @@ func main() {
 	// good can no longer be used
 	if num := 50; num < 5 {
 		fmt.Println("tiny")
-		// scoped variables can be used in
-		// "else if" conditions
+		// scoped variables can be used
 	} else if num < 20 {
 		fmt.Println("medium")
 	} else if num < 50 {

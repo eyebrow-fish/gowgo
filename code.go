@@ -18,15 +18,27 @@ func ReadCode(filename string) (string, error) {
 	packages := c.highlightKeyword("package")
 	imps := packages.highlightKeyword("import")
 	funcs := imps.highlightKeyword("func")
-	vars := funcs.highlightKeyword("var")
-	consts := vars.highlightKeyword("const")
-	ifs := consts.highlightKeyword("if")
-	elses := ifs.highlightKeyword("else")
-	prims, err := elses.highlightRegexAs("([0-9]+)|true|false", "prim")
+	vars, err := funcs.highlightRegexAs("var ", "keyword")
 	if err != nil {
 		return "", err
 	}
-	strs, err := prims.highlightRegexAs("\".*\"", "string")
+	consts, err := vars.highlightRegexAs("const ", "keyword")
+	if err != nil {
+		return "", err
+	}
+	ifs, err := consts.highlightRegexAs("if ", "keyword")
+	if err != nil {
+		return "", err
+	}
+	elses, err := ifs.highlightRegexAs(" else", "keyword")
+	if err != nil {
+		return "", err
+	}
+	prims, err := elses.highlightRegexAs("([0-9]+)| true[\n ]| false[\n ]", "prim")
+	if err != nil {
+		return "", err
+	}
+	strs, err := prims.highlightRegexAs("\"[A-z %,!/]+\"", "string")
 	if err != nil {
 		return "", err
 	}
