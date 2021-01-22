@@ -6,20 +6,16 @@ import (
 )
 
 func main() {
-	err := gowgo.RenderTemplate(
+	helloWorld, err := gowgo.ReadCode("hello-world")
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = gowgo.RenderTemplate(
 		"tutorial.html",
 		"bin/hello-world.html",
 		map[string]string{
 			"lesson": "Hello, World!",
-			"code": `package main
-
-import (
-    "fmt"
-)
-
-func main() {
-    fmt.Println("Hello, World!")
-}`,
+			"code": string(helloWorld),
 		},
 		map[string]*gowgo.Html{
 			"next": {"next", "if.html", "If Statements"},
