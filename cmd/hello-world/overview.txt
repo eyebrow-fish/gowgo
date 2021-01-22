@@ -1,0 +1,13 @@
+<p>A famous snippet of code in nine lines of Go - Hello, World!</p>
+<p>
+    The meat of the program is in the <span class="keyword">main</span> function.
+    We import the <span class="keyword">fmt</span> package
+    <span class="comment">(lines 3-5)</span>, and use the exported method
+    <span class="keyword">Println</span> <span class="comment">(line 8)</span>.
+    When calling this function, we pass in a <span class="keyword">string</span>
+    parameter with the value <span class="string">"Hello, World!"</span>.
+</p>
+<p>Now to run your first program, we need to compile our code.</p>
+<p class="command">go build main.go</p>
+<p>A new file should be created, and this is our program. Let's run it!</p>
+<p class="command">./main</p>
