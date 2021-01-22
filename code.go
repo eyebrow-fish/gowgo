@@ -13,7 +13,11 @@ func ReadCode(filename string) (string, error) {
 		return "", err
 	}
 	code := string(codeBytes)
-	code, err = highlightStrings(code)
+	code, err = highlightRegexAs(code, "\".*\"", "string")
+	if err != nil {
+		return "", err
+	}
+	code, err = highlightRegexAs(code, "[0-9]+", "prim")
 	if err != nil {
 		return "", err
 	}
@@ -22,21 +26,23 @@ func ReadCode(filename string) (string, error) {
 	code = highlightKeyword(code, "func")
 	code = highlightKeyword(code, "var")
 	code = highlightKeyword(code, "const")
+	code = highlightKeyword(code, "if")
+	code = highlightKeyword(code, "else")
 	code = strings.TrimRight(code, "\n ")
-	return string(code), err
+	return code, err
 }
 
 func highlightKeyword(code, word string) string {
 	return strings.ReplaceAll(code, word, fmt.Sprintf(`<span class="keyword">%s</span>`, word))
 }
 
-func highlightStrings(code string) (string, error) {
-	str, err := regexp.Compile("\".*\"")
+func highlightRegexAs(code, regex, class string) (string, error) {
+	pattern, err := regexp.Compile(regex)
 	if err != nil {
 		return "", err
 	}
-	for _, s := range str.FindAllString(code, -1) {
-		code = strings.Replace(code, s, fmt.Sprintf(`<span class="string">%s</span>`, s), 1)
+	for _, s := range pattern.FindAllString(code, -1) {
+		code = strings.Replace(code, s, fmt.Sprintf(`<span class="%s">%s</span>`, class, s), 1)
 	}
 	return code, nil
 }
