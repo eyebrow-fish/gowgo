@@ -6,51 +6,49 @@ import (
 	"log"
 )
 
+type tutorial struct {
+	name string
+	dir  string
+}
+
 func main() {
-	helloWorldCode, err := gowgo.ReadCode("hello-world")
-	if err != nil {
-		log.Fatal(err)
-	}
-	helloWorldOverview, err := ioutil.ReadFile("cmd/hello-world/overview.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	err = gowgo.RenderTemplate(
-		"tutorial.html",
-		"bin/hello-world.html",
-		map[string]string{
-			"lesson":   "Hello, World!",
-			"overview": string(helloWorldOverview),
-			"code":     helloWorldCode,
-		},
-		map[string]*gowgo.Html{
-			"next": {"next", "if.html", "If Statements"},
-		},
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-	ifCode, err := gowgo.ReadCode("if")
-	if err != nil {
-		log.Fatal(err)
-	}
-	ifOverview, err := ioutil.ReadFile("cmd/if/overview.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	err = gowgo.RenderTemplate(
-		"tutorial.html",
-		"bin/if.html",
-		map[string]string{
-			"lesson":   "If Statements",
-			"overview": string(ifOverview),
-			"code":     ifCode,
-		},
-		map[string]*gowgo.Html{
-			"prev": {"prev", "hello-world.html", "Hello, World!"},
-		},
-	)
-	if err != nil {
-		log.Fatal(err)
+	gen([]tutorial{
+		{name: "Hello, World!", dir: "hello-world"},
+		{name: "If Statements", dir: "if"},
+	})
+}
+
+func gen(tuts []tutorial) {
+	for i, tut := range tuts {
+		code, err := gowgo.ReadCode(tut.dir)
+		if err != nil {
+			log.Fatal(err)
+		}
+		overview, err := ioutil.ReadFile("cmd/" + tut.dir + "/overview.txt")
+		if err != nil {
+			log.Fatal(err)
+		}
+		var prev *gowgo.Html = nil
+		if i > 0 {
+			prev = &gowgo.Html{Id: "prev", Href: tuts[i-1].dir + ".html", InnerHtml: tuts[i-1].name}
+		}
+		var next *gowgo.Html = nil
+		if i < len(tuts)-1 {
+			next = &gowgo.Html{Id: "next", Href: tuts[i+1].dir + ".html", InnerHtml: tuts[i+1].name}
+		}
+		err = gowgo.RenderTemplate(
+			"tutorial.html",
+			"bin/"+tut.dir+".html",
+			map[string]string{
+				"lesson":   tut.name,
+				"overview": string(overview),
+				"code":     code,
+			},
+
+			map[string]*gowgo.Html{"prev": prev, "next": next},
+		)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }
