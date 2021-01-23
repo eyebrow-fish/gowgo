@@ -40,8 +40,12 @@
 <div id="footer"><'`><</div>
 </body>
 <script>
+    // Copy was mostly copied straight off of StackOverflow.
+    // Very simple, but it requires a strict structure to be set
+    // in place. Hopefully I remember that this is here.
+    // I am not a fan of JavaScript.
     const copy = (button) => {
-        let selection = window.getSelection()
+        const selection = window.getSelection()
         const range = document.createRange()
         const code = button
             .parentElement
