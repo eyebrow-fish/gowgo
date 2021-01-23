@@ -17,15 +17,16 @@
         </div>
         <div class="code-wrapper">
             <div class="code">
+                <button class="copy" onclick="copy(this)">Copy</button>
                 <div class="lines">
 <pre class="unselectable">
-{{var = lineCount}}
+{{var = lines}}
 </pre>
                 </div>
                 <div>
-                    <pre>
+<pre>
 {{var = code}}
-                    </pre>
+</pre>
                 </div>
             </div>
         </div>
@@ -38,4 +39,19 @@
 </div>
 <div id="footer"><'`><</div>
 </body>
+<script>
+    const copy = (button) => {
+        let selection = window.getSelection()
+        const range = document.createRange()
+        const code = button
+            .parentElement
+            .getElementsByTagName("div")[1]
+            .getElementsByTagName("pre")[0]
+        range.selectNode(code)
+        selection.removeAllRanges()
+        selection.addRange(range)
+        document.execCommand("copy")
+        selection.removeAllRanges()
+    }
+</script>
 </html>

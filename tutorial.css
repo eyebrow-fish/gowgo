@@ -14,6 +14,16 @@
     padding-right: 15px;
 }
 
+.code .copy {
+    position: absolute;
+    right: 1em;
+    top: 1em;
+    z-index: 10;
+    width: 5em;
+    text-align: center;
+    padding: 0;
+}
+
 .code-wrapper {
     flex: 60%;
 }

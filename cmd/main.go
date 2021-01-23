@@ -4,6 +4,8 @@ import (
 	"github.com/eyebrow-fish/gowgo"
 	"io/ioutil"
 	"log"
+	"strconv"
+	"strings"
 )
 
 type tutorial struct {
@@ -24,6 +26,10 @@ func gen(tuts []tutorial) {
 		if err != nil {
 			log.Fatal(err)
 		}
+		var lines string
+		for i := range strings.Split(code, "\n") {
+			lines += strconv.Itoa(i + 1) + "\n"
+		}
 		overview, err := ioutil.ReadFile("cmd/" + tut.dir + "/overview.txt")
 		if err != nil {
 			log.Fatal(err)
@@ -41,6 +47,7 @@ func gen(tuts []tutorial) {
 			"bin/"+tut.dir+".html",
 			map[string]string{
 				"lesson":   tut.name,
+				"lines":    lines,
 				"overview": string(overview),
 				"code":     code,
 			},
