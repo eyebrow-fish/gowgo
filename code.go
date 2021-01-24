@@ -3,8 +3,6 @@ package gowgo
 import (
 	"fmt"
 	"io/ioutil"
-	"strconv"
-
 	//"regexp"
 	"strings"
 )
@@ -23,9 +21,9 @@ func ReadCode(filename string) (string, error) {
 		}
 		var strs string
 		var inStr bool
-		var inNum bool
 		var inTrue bool
-		//var inFalse bool
+		var inFalse bool
+		//var inNum bool
 		for i, c := range line {
 			var prefix, suffix string
 			if c == '"' {
@@ -36,19 +34,17 @@ func ReadCode(filename string) (string, error) {
 					suffix = "</span>"
 					inStr = false
 				}
-			} else if len(line) >= i+5 && line[i:i+5] == "true" {
-				suffix = `<span class="prim">`
-				inTrue = false
-			} else if inTrue && strings.ContainsRune("true", c) {
-				suffix = "</span>"
-				inTrue = false
-			} else if _, err := strconv.Atoi(string(c)); err == nil || c == ' ' {
-				if !inNum && err == nil {
-					prefix = `<span class="prim">`
-					inNum = true
-				} else if inNum && err != nil {
+			} else if !inTrue && !inStr && len(line) >= i+4 && line[i:i+4] == "true" {
+				prefix = `<span class="prim">`
+				inTrue = true
+			} else if !inFalse && !inStr && len(line) >= i+5 && line[i:i+5] == "false" {
+				prefix = `<span class="prim">`
+				inFalse = true
+			} else {
+				if inTrue && !strings.ContainsRune("true", c) || inFalse && !strings.ContainsRune("false", c) {
 					suffix = "</span>"
-					inNum = false
+					inTrue = false
+					inFalse = false
 				}
 			}
 			strs += prefix + string(c) + suffix
@@ -62,5 +58,5 @@ func ReadCode(filename string) (string, error) {
 		elses := strings.ReplaceAll(ifs, "else", `<span class="keyword">else</span>`)
 		replaced += elses
 	}
-	return replaced, err
+	return strings.TrimSpace(replaced), err
 }
