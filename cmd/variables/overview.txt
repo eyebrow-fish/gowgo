@@ -1,0 +1,20 @@
+<p>
+    Like most modern languages Golang has a <span class="keyword">var</span>
+    keyword. When using this keyword, a type must be provided after
+    the name of the variable.
+</p>
+<p>
+    However, the convention is to use the
+    <span class="keyword">walrus operator</span>
+    <span class="comment">(:=)</span>, unless the
+    variable is outside of a function or not initialized yet.
+</p>
+<p>
+    Additionally, there is the <span class="keyword">const</span>
+    keyword. Normally, we only use this for variables outside of functions
+    and when we know the value should stay the same.
+</p>
+<p>
+    It's also important to note that your program won't compile if
+    you have unused variables.
+</p>

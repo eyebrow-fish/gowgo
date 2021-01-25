@@ -3,10 +3,8 @@ package gowgo
 import (
 	"fmt"
 	"io/ioutil"
-	"unicode"
-
-	//"regexp"
 	"strings"
+	"unicode"
 )
 
 func ReadCode(filename string) (string, error) {
@@ -17,10 +15,6 @@ func ReadCode(filename string) (string, error) {
 	var replaced string
 	for _, line := range strings.Split(string(codeBytes), "\n") {
 		line = line + "\n"
-		if strings.HasPrefix(strings.TrimSpace(line), "//") {
-			replaced += fmt.Sprintf(`<span class="comment">%s</span>`, line)
-			continue
-		}
 		types := highlightTypes(line)
 		packages := highlightKeywords(types, "package")
 		imports := highlightKeywords(packages, "import")
@@ -42,7 +36,10 @@ func highlightTypes(src string) string {
 	var inNum bool
 	for i, c := range src {
 		var prefix, suffix string
-		if c == '"' {
+		if c == '/' && i < len(src)-1 && src[i+1] == '/' {
+			types += `<span class="comment">` + src[i:len(src)-1] + "</span>\n"
+			break
+		} else if c == '"' {
 			if !inStr {
 				prefix = `<span class="string">`
 				inStr = true
@@ -75,5 +72,16 @@ func highlightTypes(src string) string {
 }
 
 func highlightKeywords(src, word string) string {
-	return strings.ReplaceAll(src, word, `<span class="keyword">` + word + `</span>`)
+	var output []string
+	for i, v := range strings.Split(src, " ") {
+		if v == "//" {
+			output = append(output, `<span class="comment">`+src[i:len(src)-1]+"</span>\n")
+			break
+		} else if v == word {
+			output = append(output, `<span class="keyword">`+v+"</span>")
+		} else {
+			output = append(output, v)
+		}
+	}
+	return strings.Join(output, " ")
 }
