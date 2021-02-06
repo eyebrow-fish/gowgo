@@ -99,6 +99,8 @@ func highlightKeywords(src hi, word string) hi {
 			inComment = true
 		} else if trimmedL == word {
 			output = append(output, `<span class="keyword">`+v+"</span>")
+		} else if trimmedL == word + ":" {
+			output = append(output, `<span class="keyword">`+v[:len(v)-2]+"</span>:\n")
 		} else {
 			if strings.Contains(trimmedL, `class="comment"`) {
 				inComment = true
