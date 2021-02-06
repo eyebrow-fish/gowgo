@@ -18,6 +18,7 @@ func main() {
 		{name: "Hello, World!", dir: "hello-world"},
 		{name: "If Statements", dir: "if"},
 		{name: "Variables", dir: "variables"},
+		{name: "Switch", dir: "switch"},
 	})
 }
 

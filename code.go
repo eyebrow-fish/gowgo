@@ -16,14 +16,24 @@ func ReadCode(filename string) (string, error) {
 	for _, line := range strings.Split(string(codeBytes), "\n") {
 		line = line + "\n"
 		types := highlightTypes(line)
-		packages := highlightKeywords(types, "package")
+		packages := highlightKeywords(hi{text: types}, "package")
 		imports := highlightKeywords(packages, "import")
 		funcs := highlightKeywords(imports, "func")
 		vars := highlightKeywords(funcs, "var")
 		consts := highlightKeywords(vars, "const")
 		ifs := highlightKeywords(consts, "if")
 		elses := highlightKeywords(ifs, "else")
-		replaced += elses
+		switches := highlightKeywords(elses, "switch")
+		cases := highlightKeywords(switches, "case")
+		defaults := highlightKeywords(cases, "default")
+		fallthroughs := highlightKeywords(defaults, "fallthrough")
+		typeWords := highlightKeywords(fallthroughs, "type")
+		structs := highlightKeywords(typeWords, "struct")
+		interfaces := highlightKeywords(structs, "interface")
+		selects := highlightKeywords(interfaces, "selects")
+		stringTypes := highlightKeywords(selects, "string")
+		boolTypes := highlightKeywords(stringTypes, "bool")
+		replaced += boolTypes.text
 	}
 	return strings.TrimSpace(replaced), err
 }
@@ -71,17 +81,30 @@ func highlightTypes(src string) string {
 	return types
 }
 
-func highlightKeywords(src, word string) string {
+type hi struct {
+	text    string
+	comment bool
+}
+
+func highlightKeywords(src hi, word string) hi {
+	if src.comment {
+		return src
+	}
 	var output []string
-	for i, v := range strings.Split(src, " ") {
-		if v == "//" {
-			output = append(output, `<span class="comment">`+src[i:len(src)-1]+"</span>\n")
-			break
-		} else if v == word {
+	var inComment bool
+	for i, v := range strings.Split(src.text, " ") {
+		trimmedL := strings.TrimSpace(v)
+		if trimmedL == "//" {
+			output = append(output, `<span class="comment">`+src.text[i:len(src.text)-1]+"</span>\n")
+			inComment = true
+		} else if trimmedL == word {
 			output = append(output, `<span class="keyword">`+v+"</span>")
 		} else {
+			if strings.Contains(trimmedL, `class="comment"`) {
+				inComment = true
+			}
 			output = append(output, v)
 		}
 	}
-	return strings.Join(output, " ")
+	return hi{strings.Join(output, " "), inComment}
 }
