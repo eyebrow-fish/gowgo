@@ -70,7 +70,7 @@ func highlightTypes(src string) string {
 			} else if inTrue && !strings.ContainsRune("true", c) ||
 				inFalse && !strings.ContainsRune("false", c) ||
 				inNum && !unicode.IsDigit(c) {
-				suffix = "</span>"
+				prefix = "</span>"
 				inTrue = false
 				inFalse = false
 				inNum = false
