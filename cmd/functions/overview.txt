@@ -1,0 +1,5 @@
+<p>Functions are blocks of code which optionally take parameters and optionally return value(s).</p>
+<p>
+    Function return values are evaluated every time is a function is invoked. A function is invoked with the function
+    name followed by parenthesis "()".
+</p>

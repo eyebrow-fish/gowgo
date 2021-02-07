@@ -40,6 +40,7 @@ func main() {
 		{name: "If Statements", dir: "if"},
 		{name: "Variables", dir: "variables"},
 		{name: "Switch", dir: "switch"},
+		{name: "Functions", dir: "functions"},
 	})
 }
 

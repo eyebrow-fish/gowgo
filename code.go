@@ -90,6 +90,7 @@ func highlightKeywords(src hi, word string) hi {
 	if src.comment {
 		return src
 	}
+	trailing := []string{":", "("}
 	var output []string
 	var inComment bool
 	for i, v := range strings.Split(src.text, " ") {
@@ -99,13 +100,22 @@ func highlightKeywords(src hi, word string) hi {
 			inComment = true
 		} else if trimmedL == word {
 			output = append(output, `<span class="keyword">`+v+"</span>")
-		} else if trimmedL == word + ":" {
-			output = append(output, `<span class="keyword">`+v[:len(v)-2]+"</span>:\n")
 		} else {
+			var foundSuffixed bool
+			for _, t := range trailing {
+				if len(trimmedL) > len(word) && trimmedL[:len(word)+1] == word+t {
+					leftMargin := strings.Repeat("\t", strings.Count(v, "\t"))
+					rightMargin := v[len(word)+len(leftMargin):]
+					output = append(output, leftMargin+`<span class="keyword">`+word+"</span>"+rightMargin)
+					foundSuffixed = true
+				}
+			}
 			if strings.Contains(trimmedL, `class="comment"`) {
 				inComment = true
 			}
-			output = append(output, v)
+			if !foundSuffixed {
+				output = append(output, v)
+			}
 		}
 	}
 	return hi{strings.Join(output, " "), inComment}
