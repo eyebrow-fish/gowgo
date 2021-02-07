@@ -4,6 +4,7 @@ import (
 	"github.com/eyebrow-fish/gowgo"
 	"io/ioutil"
 	"log"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -14,6 +15,26 @@ type tutorial struct {
 }
 
 func main() {
+	if err := os.RemoveAll("bin"); err != nil {
+		log.Fatal(err)
+	}
+	err := os.Mkdir("bin", 0755)
+	if err != nil && !os.IsExist(err) {
+		log.Fatal(err)
+	}
+	staticFiles, err := ioutil.ReadDir("static")
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, staticFile := range staticFiles {
+		input, err := ioutil.ReadFile("static/" + staticFile.Name())
+		if err != nil {
+			log.Fatal(err)
+		}
+		if err = ioutil.WriteFile("bin/"+staticFile.Name(), input, 0644); err != nil {
+			log.Fatal(err)
+		}
+	}
 	gen([]tutorial{
 		{name: "Hello, World!", dir: "hello-world"},
 		{name: "If Statements", dir: "if"},
@@ -30,7 +51,7 @@ func gen(tuts []tutorial) {
 		}
 		var lines string
 		for i := range strings.Split(code, "\n") {
-			lines += strconv.Itoa(i + 1) + "\n"
+			lines += strconv.Itoa(i+1) + "\n"
 		}
 		overview, err := ioutil.ReadFile("cmd/" + tut.dir + "/overview.txt")
 		if err != nil {
@@ -53,7 +74,6 @@ func gen(tuts []tutorial) {
 				"overview": string(overview),
 				"code":     code,
 			},
-
 			map[string]*gowgo.Html{"prev": prev, "next": next},
 		)
 		if err != nil {

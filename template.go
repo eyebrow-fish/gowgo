@@ -24,12 +24,12 @@ func RenderTemplate(input, output string, attr map[string]string, htmlTemps map[
 		return err
 	}
 	template := string(inputData)
-	template = injectVars(template, attr, varMatches)
+	vars := injectVars(template, attr, varMatches)
 	pathMatches, err := findMatches("path", string(inputData))
 	if err != nil {
 		return err
 	}
-	template, err = injectPaths(template, output, pathMatches)
+	paths, err := injectPaths(vars, pathMatches)
 	if err != nil {
 		return err
 	}
@@ -37,23 +37,12 @@ func RenderTemplate(input, output string, attr map[string]string, htmlTemps map[
 	if err != nil {
 		return err
 	}
-	template = injectHtml(template, htmlTemps, htmlMatches)
-	paths := strings.SplitAfter(output, string(os.PathSeparator))
-	err = os.Mkdir(strings.Join(paths[:len(paths)-1], string(os.PathSeparator)), 0755)
-	if err != nil {
-		if strings.Contains(err.Error(), "exists") {
-			if err := os.RemoveAll(output); err != nil {
-				return err
-			}
-		} else {
-			return err
-		}
-	}
+	htmls := injectHtml(paths, htmlTemps, htmlMatches)
 	outputFile, err := os.Create(output)
 	if err != nil {
 		return err
 	}
-	_, err = outputFile.WriteString(template)
+	_, err = outputFile.WriteString(htmls)
 	return err
 }
 
@@ -68,18 +57,17 @@ func injectVars(template string, attr map[string]string, varMatches []string) st
 	return template
 }
 
-func injectPaths(template, output string, pathMatches []string) (string, error) {
+func injectPaths(template string, pathMatches []string) (string, error) {
 	for _, match := range pathMatches {
 		fileName := strings.TrimFunc(
 			strings.SplitAfter(match, "=")[1],
 			func(r rune) bool { return r == ' ' || r == '}' },
 		)
-		file, err := os.Stat(fileName)
+		file, err := os.Stat("bin/"+fileName)
 		if err != nil {
 			return "", err
 		}
-		parent := strings.Repeat("../", strings.Count(output, "/"))
-		template = strings.ReplaceAll(template, match, parent+file.Name())
+		template = strings.ReplaceAll(template, match, file.Name())
 	}
 	return template, nil
 }
@@ -102,7 +90,7 @@ func injectHtml(template string, htmlTemps map[string]*Html, htmlMatches []strin
 }
 
 func findMatches(typeName, inputData string) ([]string, error) {
-	varExp, err := regexp.Compile(fmt.Sprintf("{{\\s*%s\\s*=\\s*[A-z0-9\\.\\(\\)\\,\\s]+\\s*}}", typeName))
+	varExp, err := regexp.Compile(fmt.Sprintf("{{\\s*%s\\s*=\\s*[A-z0-9\\/\\.\\(\\)\\,\\s]+\\s*}}", typeName))
 	if err != nil {
 		return nil, err
 	}
