@@ -12,10 +12,10 @@ func main() {
 	// in "fmt" and "strings" packages
 	fmt.Println(strings.ToLower(author))
 	// functions can be assigned to variables
-	appendBestLastName := func(name string) string {
+	withSurname := func(name string) string {
 		return name + " Johnston"
 	}
-	fmt.Printf("fullname: %s", appendBestLastName(author))
+	fmt.Println(withSurname(author))
 	// functions can also be called
 	// on the spot
 	func() {
@@ -23,7 +23,7 @@ func main() {
 		// from a higher scope
 		// such as "author"
 		age := 22
-		fmt.Printf("author is %d", age)
+		fmt.Printf("author is %d\n", age)
 	}()
 	// like all blocks, functions are scoped
 	// which means we cannot access "x" or "y"

@@ -14,18 +14,48 @@
     padding-right: 15px;
 }
 
-.code .copy {
+.code button {
     position: absolute;
-    right: 1em;
-    top: 1em;
     z-index: 10;
     width: 5em;
     text-align: center;
     padding: 0;
 }
 
+.code .copy {
+    right: 1em;
+    top: 1em;
+}
+
+.code .run {
+    right: 6.5em;
+    top: 1em;
+}
+
+.code .output {
+    bottom: -0.1em;
+    border: inherit;
+    left: -0.1em;
+    padding: 1em;
+    position: absolute;
+    visibility: collapse;
+    width: calc(100% - 2em);
+    z-index: 10;
+    resize: both;
+}
+
+.code .output .outputText {
+    width: calc(100% - 6.5em);
+}
+
+.code .output .close {
+    right: 1em;
+    top: 1em;
+}
+
 .code-wrapper {
     flex: 60%;
+    overflow: paged-y;
 }
 
 .overview {

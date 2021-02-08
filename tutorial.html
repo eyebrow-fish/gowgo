@@ -17,13 +17,18 @@
         </div>
         <div class="code-wrapper">
             <div class="code">
-                <button class="copy" onclick="copy(this)">Copy</button>
+                <button class="run" onclick="run()">Run</button>
+                <button class="copy" onclick="copy()">Copy</button>
+                <div class="output">
+                    <button class="close" onclick="closeOutput(this)">Close</button>
+                    <div class="outputText"></div>
+                </div>
                 <div class="lines">
 <pre class="unselectable">
 {{var = lines}}
 </pre>
                 </div>
-                <div>
+                <div class="codeText">
 <pre>
 {{var = code}}
 </pre>
@@ -44,18 +49,49 @@
     // Very simple, but it requires a strict structure to be set
     // in place. Hopefully I remember that this is here.
     // I am not a fan of JavaScript.
-    const copy = (button) => {
+    const copy = () => {
         const selection = window.getSelection()
         const range = document.createRange()
-        const code = button
-            .parentElement
-            .getElementsByTagName("div")[1]
+        const code = document
+            .getElementsByClassName("codeText")[0]
             .getElementsByTagName("pre")[0]
         range.selectNode(code)
         selection.removeAllRanges()
         selection.addRange(range)
         document.execCommand("copy")
         selection.removeAllRanges()
+    }
+
+    const run = () => {
+        const code = document
+            .getElementsByClassName("codeText")[0]
+            .getElementsByTagName("pre")[0]
+        const req = new XMLHttpRequest()
+        req.onload = () => {
+            let output = document.getElementsByClassName("output")[0];
+            const outputText = output.getElementsByClassName("outputText")[0]
+            const resp = JSON.parse(req.responseText)
+            if (resp['Errors']) {
+                outputText.innerText = resp['Errors']
+                output.style.backgroundColor = '#f6dae1'
+            } else {
+                const respEvents = resp['Events']
+                outputText.innerText = respEvents
+                    .filter(e => e['Kind'] === 'stdout')
+                    .map(e => e['Message'])
+                    .join("\n")
+                output.style.backgroundColor = '#e6f5e2'
+            }
+            output.style.visibility = 'unset'
+        }
+        req.open('POST', 'https://play.golang.org/compile')
+        req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+        req.send(`version=2&body=${encodeURIComponent(code.innerText)}&withVet=true`)
+    }
+
+    const closeOutput = (button) => {
+        button.parentElement.style.visibility = 'collapse'
+        button.parentElement.getElementsByClassName("outputText")[0].innerText = ''
     }
 </script>
 </html>
