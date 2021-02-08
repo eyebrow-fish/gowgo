@@ -1,5 +1,19 @@
 <p>Functions are blocks of code which optionally take parameters and optionally return value(s).</p>
 <p>
-    Function return values are evaluated every time is a function is invoked. A function is invoked with the function
-    name followed by parenthesis "()".
+    The syntax for functions always begin with <span class="keyword">func</span>.
+    This is then followed by a name <span class="comment">(unless it's anonymous or assigned
+    to a variable)</span>, the parameters
+    <span class="comment">(wrapped in parenthesis)</span>,
+    return values <span class="comment">(parenthesis if more than one)</span>, and body block.
+</p>
+<p>
+    In function blocks there are two new keywords, <span class="keyword">return</span> and
+    <span class="keyword">defer</span>. The <span class="keyword">return</span> keyword, forces the
+    block to not proceed further and return the value to the right. Whereas, the
+    <span class="keyword">defer</span> keyword is an expression which is executed after the function
+    returns. Defers will still execute even if the program panics.
+</p>
+<p>
+    Functions are in all modern languages, and are crucial to everyday development.
+    They help separate code, deduplicate logic, move complexities, and more!
 </p>

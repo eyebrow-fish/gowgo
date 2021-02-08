@@ -33,7 +33,9 @@ func ReadCode(filename string) (string, error) {
 		selects := highlightKeywords(interfaces, "selects")
 		stringTypes := highlightKeywords(selects, "string")
 		boolTypes := highlightKeywords(stringTypes, "bool")
-		replaced += boolTypes.text
+		defers := highlightKeywords(boolTypes, "defer")
+		returns := highlightKeywords(defers, "return")
+		replaced += returns.text
 	}
 	return strings.TrimSpace(replaced), err
 }

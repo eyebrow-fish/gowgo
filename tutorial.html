@@ -76,11 +76,15 @@
                 output.style.backgroundColor = '#f6dae1'
             } else {
                 const respEvents = resp['Events']
-                outputText.innerText = respEvents
-                    .filter(e => e['Kind'] === 'stdout')
+                let stdEvents = respEvents.filter(e => e['Kind'].startsWith('std'));
+                outputText.innerText = stdEvents
                     .map(e => e['Message'])
                     .join("\n")
-                output.style.backgroundColor = '#e6f5e2'
+                if (stdEvents.find(e => e['Kind'] === 'stderr')) {
+                    output.style.backgroundColor = '#f6dae1'
+                } else {
+                    output.style.backgroundColor = '#e6f5e2'
+                }
             }
             output.style.visibility = 'unset'
         }

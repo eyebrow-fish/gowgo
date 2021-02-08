@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 )
@@ -25,10 +26,25 @@ func main() {
 		age := 22
 		fmt.Printf("author is %d\n", age)
 	}()
-	// like all blocks, functions are scoped
-	// which means we cannot access "x" or "y"
+	// cannot access "x" or "y" anymore
+	// a multi-return value function
+	name, err := createFullName("", "Smith")
+	if err != nil {
+		panic(err) // panic is a built-in function
+	}
+	fmt.Println(name)
 }
 
 func authorName() string {
 	return "Alexander"
+}
+
+// takes in two strings
+// returns a string and an potential error
+func createFullName(firstName, lastName string) (string, error) {
+	defer fmt.Println("Happens after createFullName returns. :)")
+	if firstName == "" || lastName == "" {
+		return "", errors.New("missing first or last name")
+	}
+	return firstName + " " + lastName, nil
 }

@@ -37,9 +37,9 @@ func main() {
 	}
 	gen([]tutorial{
 		{name: "Hello, World!", dir: "hello-world"},
-		{name: "If Statements", dir: "if"},
 		{name: "Variables", dir: "variables"},
-		{name: "Switch", dir: "switch"},
+		{name: "If Statements", dir: "if"},
+		{name: "Switch Statements", dir: "switch"},
 		{name: "Functions", dir: "functions"},
 	})
 }
